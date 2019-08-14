@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
 
-const Display = ({good,neutral,bad}) => (
+const Statistics = ({good,neutral,bad}) => (
     <div>
         <p>good: {good}</p>
         <p>neutral: {neutral}</p>
@@ -29,7 +29,7 @@ const App = props => {
         <Button onClick={() => setNeutral(neutral+1)} text='neutral'/>
         <Button onClick={() => setBad(bad+1)} text='bad'/>
         <h2>statistics</h2>
-        <Display good={good} neutral={neutral} bad={bad}/>
+        <Statistics good={good} neutral={neutral} bad={bad}/>
       </div>
   )
 }
