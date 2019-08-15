@@ -2,9 +2,7 @@ import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
 const Display = ({value}) => (
-    <div>
-        <p>{value}</p>
-    </div>
+        <div>{value}</div>
 )
 
 const Button = ({onClick,text }) => (
@@ -28,12 +26,16 @@ const App = (props) => {
 
     return (
         <div>
+            <h2>Anectode of the day</h2>
             <Display value={props.anecdotes[selected]}/>
             <Display value={'has '+votes[selected]+' votes'}/>
             <p>
                 <Button onClick={() => handleSelect()} text='next anectode' />
                 <Button onClick={() => handleVotes()} text='vote'/>
             </p>
+            <h2>Anectode with the most votes</h2>
+            <Display value={props.anecdotes[votes.indexOf(Math.max.apply(null,votes))]}/>
+            <Display value={'has '+Math.max.apply(null,votes)+' votes'}/> 
         </div>
     )
 }
