@@ -12,9 +12,15 @@ const Content = ({ course }) => {
             key={part.id}
         />)
 
+    const exerciseSum = () => {
+        const total = course.parts.reduce((a,b) => a+b.exercises,0) 
+        return <li><strong>total of {total} exercises</strong></li>
+    }
+
     return (
         <ul>
             {rows()}
+            {exerciseSum()}
         </ul>
     )
 }
