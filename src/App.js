@@ -3,32 +3,41 @@ import Person from './components/Person'
 
 const App = () => {
 	const [persons, setPersons] = useState([
-    	{ name: 'Arto Hellas',id:0 }
-  	]) 
+		{ name: 'Arto Hellas', number: '040-123456' },
+		{ name: 'Ada Lovelace', number: '39-44-5323523' },
+		{ name: 'Dan Abramov', number: '12-43-234345' },
+		{ name: 'Mary Poppendieck', number: '39-23-6423122' }
+	  ]) 
 	const [ newName, setNewName ] = useState('')
+	const [newNumber,setNewNumber] = useState('')
 
-	const handleNewPerson = (event) => {
+	const handleNewName = (event) => {
 		setNewName(event.target.value)
-  	}
+	  }
+	  
+	const handleNewNumber = (event) => {
+		setNewNumber(event.target.value)
+	}
 
 	const addNewPerson = (event) => {
 		event.preventDefault()
 		const newPerson = {
 			name: newName,
-			id: persons.length+1 //minor addition added
+			number: newNumber
 		}
-		if (persons.some(ele => ele.name === newName)) { //checks for duplicate entry
+		if (persons.some(ele => ele.name === newName)) { //checks for duplicate name entry
 			window.alert(`${newName} is already in the phonebook `)
 		}
 		else {
 			setPersons(persons.concat(newPerson))
 			setNewName('')
+			setNewNumber('')
 		}	
 
 	}
 
 	const rows = () => (
-		persons.map(person => <Person person={person} key={person.id}/>)
+		persons.map(person => <Person person={person} key={person.name}/>)
 	)
 
 	return (
@@ -36,7 +45,9 @@ const App = () => {
     	<h2>Phonebook</h2>
       	<form onSubmit={addNewPerson}>
         	<div>
-          	name: <input value={newName} onChange={handleNewPerson}/>
+				name: <input value={newName} onChange={handleNewName}/>
+				<br/>
+				number: <input value={newNumber} onChange={handleNewNumber}/>
         	</div>
         	<div>
           		<button type="submit">add</button>
