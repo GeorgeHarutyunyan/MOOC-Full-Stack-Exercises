@@ -17,8 +17,14 @@ const App = () => {
 			name: newName,
 			id: persons.length+1 //minor addition added
 		}
-		setPersons(persons.concat(newPerson))
-		setNewName('')
+		if (persons.some(ele => ele.name === newName)) { //checks for duplicate entry
+			window.alert(`${newName} is already in the phonebook `)
+		}
+		else {
+			setPersons(persons.concat(newPerson))
+			setNewName('')
+		}	
+
 	}
 
 	const rows = () => (
