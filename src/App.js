@@ -10,6 +10,7 @@ const App = () => {
 	  ]) 
 	const [ newName, setNewName ] = useState('')
 	const [newNumber,setNewNumber] = useState('')
+	const [searchValue,setSearchValue] = useState('')
 
 	const handleNewName = (event) => {
 		setNewName(event.target.value)
@@ -17,6 +18,11 @@ const App = () => {
 	  
 	const handleNewNumber = (event) => {
 		setNewNumber(event.target.value)
+	}
+
+	const handleSearchValue = (event) => {
+		console.log(searchValue)
+		setSearchValue(event.target.value)
 	}
 
 	const addNewPerson = (event) => {
@@ -36,13 +42,15 @@ const App = () => {
 
 	}
 
-	const rows = () => (
-		persons.map(person => <Person person={person} key={person.name}/>)
-	)
+	const rows = () => {
+		const filteredSearch = persons.filter(person => person.name.toLowerCase().includes(searchValue.toLowerCase()))
+		return filteredSearch.map(person => <Person person={person} key={person.name}/>)
+	}	
 
 	return (
     <div>
     	<h2>Phonebook</h2>
+		filter shown with: <input value={searchValue} onChange={handleSearchValue}/>
       	<form onSubmit={addNewPerson}>
         	<div>
 				name: <input value={newName} onChange={handleNewName}/>
