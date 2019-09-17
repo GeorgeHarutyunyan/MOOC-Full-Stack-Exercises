@@ -3,7 +3,7 @@ import Country from './Country'
 
 const Display = ({data,searchValue}) => {
     const filteredData = data.filter(country => country.name.toLowerCase().includes(searchValue.toLowerCase()))
-    console.log(filteredData)
+  //  console.log(filteredData)
 
     if (filteredData.length > 10) {
         if (searchValue !== '') {
@@ -16,12 +16,12 @@ const Display = ({data,searchValue}) => {
     
     else if (filteredData.length === 1) {
         return (
-            <Country data={filteredData[0]} expanded={true}/>
+            <Country data={filteredData[0]} singleEntryCheck={filteredData.length === 1}/>
         )
     }
 
     return (
-        filteredData.map(country => <Country key={country.name} data={country} expanded={false}/>)
+        filteredData.map(country => <Country key={country.name} data={country} singleEntryCheck={filteredData.length === 1}/>)
     )
 }
 
