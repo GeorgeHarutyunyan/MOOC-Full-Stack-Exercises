@@ -50,7 +50,14 @@ const App = () => {
 
 		}	
 
-	}
+    }
+
+    const handleDeletePerson = id => {
+        const request = personService.deletePerson(id)
+        return request.then(response => {
+            setPersons(persons.filter(p => p.id !== id))
+        })
+    }
 
 	return (
     <div>
@@ -67,7 +74,7 @@ const App = () => {
         	</div>
       	</form>
       	<h2>Numbers</h2>
-		<Persons persons={persons} query={searchValue}/>
+            <Persons persons={persons} deletePerson={handleDeletePerson} query={searchValue}/>
     </div>
   )
 }
