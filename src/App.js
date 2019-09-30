@@ -53,10 +53,14 @@ const App = () => {
     }
 
     const handleDeletePerson = id => {
-        const request = personService.deletePerson(id)
-        return request.then(response => {
-            setPersons(persons.filter(p => p.id !== id))
-        })
+		if (window.confirm(`Delete ${persons.find(p => id === p.id).name} from the phonebook?`)){
+			const request = personService.deletePerson(id)
+			return request.then(response => {
+				setPersons(persons.filter(p => p.id !== id))
+			}
+			)
+		}
+
     }
 
 	return (
