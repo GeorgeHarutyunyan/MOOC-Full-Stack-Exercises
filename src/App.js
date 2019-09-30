@@ -2,6 +2,7 @@
 import Persons from './components/Persons'
 import Filter from './components/Filter'
 import personService from './services/persons-services'
+import personsServices from './services/persons-services'
 
 const App = () => {
 	const [persons, setPersons] = useState([]) 
@@ -37,7 +38,7 @@ const App = () => {
 			number: newNumber
 		}
 		if (persons.some(ele => ele.name === newName)) { //checks for duplicate name entry
-			window.alert(`${newName} is already in the phonebook `)
+			handleDuplicateEntry(newName)
 		}
 		else {
 			personService
@@ -47,10 +48,17 @@ const App = () => {
 				setNewName('')
 				setNewNumber('')
 			})
-
 		}	
-
-    }
+	}
+	
+	const handleDuplicateEntry = () => {
+		if (window.confirm(`${newName} is already in the phonebook. Replace the old number with a new one?`)) {
+			const person = persons.find(p => p.name === newName)
+			const updatedPersonObject = {...person,number:newNumber}
+			personsServices.updatePerson(person.id,updatedPersonObject)
+			setPersons(persons.map(p => p.name === newName ? updatedPersonObject: p))
+		}
+	}
 
     const handleDeletePerson = id => {
 		if (window.confirm(`Delete ${persons.find(p => id === p.id).name} from the phonebook?`)){
