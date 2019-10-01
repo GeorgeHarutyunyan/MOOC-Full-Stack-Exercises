@@ -3,6 +3,7 @@ import Persons from './components/Persons'
 import Filter from './components/Filter'
 import personService from './services/persons-services'
 import SuccessNotification from './components/SuccessNotification'
+import ErrorNotification from './components/ErrorNotification'
 
 const App = () => {
 	const [persons, setPersons] = useState([]) 
@@ -17,8 +18,18 @@ const App = () => {
 		.getAll()
 		.then(response => {
 			setPersons(response)
-		})
+            })
+            .catch(error => {
+                console.log('Error getting persons',error)
+            })
 	},[])
+
+    const resetNotification = () => {
+        setTimeout(() => {
+            setSuccessMessage(null)
+            setErrorMessage(null)
+        }, 5000)
+    }
 
 	const handleNewName = (event) => {
 		setNewName(event.target.value)
@@ -29,7 +40,6 @@ const App = () => {
 	}
 
 	const handleSearchValue = (event) => {
-		console.log(searchValue)
 		setSearchValue(event.target.value)
 	}
 
@@ -46,13 +56,19 @@ const App = () => {
 			personService
 			.createPerson(newPerson)
 			.then(response => {
-                setSuccessMessage(`Successfully added ${newPerson.name} to the phonebook`)
-                setTimeout(() => {
-                    setSuccessMessage(null)
-                },5000)
+                setSuccessMessage(`Successfully added ${newPerson.name} to the phonebook!`)
+                resetNotification()
                 setPersons(persons.concat(response))
                 setNewName('')
-                setNewNumber('')})
+                setNewNumber('')
+                })
+            .catch(error => {
+                setErrorMessage(`Failed to add ${newPerson.name} to the phonebook!`)
+                resetNotification()
+                setPersons(persons.filter(p => p.name !== newPerson.name))
+                setNewName('')
+                setNewNumber('')
+                })
 			}
 		}	
 	
@@ -63,28 +79,36 @@ const App = () => {
 			const updatedPersonObject = {...person,number:newNumber}
             personService.updatePerson(person.id, updatedPersonObject)
                 .then(response => {
-                    setSuccessMessage(`Successfully updated phone number for ${person.name}`)
-                    setTimeout(() => {
-                        setSuccessMessage(null)
-                    }, 5000)
+                    setSuccessMessage(`Successfully updated phone number for ${person.name}!`)
+                    resetNotification()
                     setPersons(persons.map(p => p.name === newName ? updatedPersonObject : p))
-                }
-                )
+                    setNewName('')
+                    setNewNumber('')
+                })
+                .catch(error => {
+                    setErrorMessage(`Failed to update phone number for ${person.name}!`)
+                    resetNotification()
+                    setPersons(persons.filter(p => p.id !== person.id))
+                    setNewName('')
+                    setNewNumber('')
+                })
 		}
 	}
 
     const handleDeletePerson = id => {
         if (window.confirm(`Delete ${persons.find(p => id === p.id).name} from the phonebook?`)) {
-            const person = persons.find(p => p.name === newName)
+            const person = persons.find(p => p.id === id)
 			personService.deletePerson(id)
     			.then(response => {
                     setSuccessMessage(`Successfully deleted ${person.name}`)
-                    setTimeout(() => {
-                        setSuccessMessage(null)
-                    }, 5000)
+                    resetNotification()
                     setPersons(persons.filter(p => p.id !== id))
-    			}
-    			)
+                })
+                .catch(error => {
+                    setErrorMessage(`${person.name} is already deleted from the phonebook!`)
+                    resetNotification()
+                    setPersons(persons.filter(p => p.id !== id)) //unnecessary? 
+                })
 		}
 
     }
@@ -92,7 +116,8 @@ const App = () => {
 	return (
         <div>
             <h2>Phonebook</h2>
-            <SuccessNotification message={successMessage}/>
+            <SuccessNotification message={successMessage} />
+            <ErrorNotification message={errorMessage}/>
     		<Filter value={searchValue} onChange={handleSearchValue}/>
           	<form onSubmit={addNewPerson}>
             	<div>
