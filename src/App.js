@@ -17,7 +17,8 @@ const App = () => {
 		personService
 		.getAll()
 		.then(response => {
-			setPersons(response)
+            setPersons(response)
+            console.log('Persons in front: ',response)
             })
             .catch(error => {
                 console.log('Error getting persons',error)
@@ -44,11 +45,11 @@ const App = () => {
 	}
 
 	const addNewPerson = (event) => {
-		event.preventDefault()
+        event.preventDefault()
 		const newPerson = {
 			name: newName,
 			number: newNumber
-		}
+        }
 		if (persons.some(ele => ele.name === newName)) { //checks for duplicate name entry
 			handleDuplicateEntry(newName)
 		}
@@ -58,7 +59,7 @@ const App = () => {
 			.then(response => {
                 setSuccessMessage(`Successfully added ${newPerson.name} to the phonebook!`)
                 resetNotification()
-                setPersons(persons.concat(response))
+                setPersons(persons.concat(newPerson))
                 setNewName('')
                 setNewNumber('')
                 })
