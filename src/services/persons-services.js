@@ -21,6 +21,7 @@ const deletePerson = id => {
     return request.then(response => response.data)
 }
 
+//no longer in use
 const updatePerson = (id,newObject) => {
     const request = axios.put(`${baseURL}/${id}`,newObject)
     return request.then(response => response.data)

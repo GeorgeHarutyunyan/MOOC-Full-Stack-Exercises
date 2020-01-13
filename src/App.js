@@ -51,7 +51,8 @@ const App = () => {
 			number: newNumber
         }
 		if (persons.some(ele => ele.name === newName)) { //checks for duplicate name entry
-			handleDuplicateEntry(newName)
+            setErrorMessage("Names must be unique!")
+            resetNotification()
 		}
 		else {
 			personService
@@ -73,11 +74,13 @@ const App = () => {
 			}
 		}	
 	
-	
+    /*
 	const handleDuplicateEntry = () => {
+
 		if (window.confirm(`${newName} is already in the phonebook. Replace the old number with a new one?`)) {
 			const person = persons.find(p => p.name === newName)
-			const updatedPersonObject = {...person,number:newNumber}
+            const updatedPersonObject = {...person,number:newNumber}
+            console.log(updatedPersonObject)
             personService.updatePerson(person.id, updatedPersonObject)
                 .then(response => {
                     setSuccessMessage(`Successfully updated phone number for ${person.name}!`)
@@ -93,8 +96,10 @@ const App = () => {
                     setNewName('')
                     setNewNumber('')
                 })
-		}
-	}
+        }
+ 
+    }
+    */
 
     const handleDeletePerson = id => {
         if (window.confirm(`Delete ${persons.find(p => id === p.id).name} from the phonebook?`)) {
